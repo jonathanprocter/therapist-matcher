@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Ideal Therapist Match</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0f8e8 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c5530;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .header p {
+            color: #5a6c57;
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e7e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a7c59, #6db33f);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #5a6c57;
+            font-weight: 500;
+        }
+
+        .question-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .question-number {
+            color: #4a7c59;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .question-content {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .option-left, .option-right {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .option-left {
+            background: #e8f4f8;
+            color: #2c5d6b;
+        }
+
+        .option-right {
+            background: #f0f8e8;
+            color: #4a5d2c;
+        }
+
+        .scale-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .scale-option {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #d0d7d0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #5a6c57;
+        }
+
+        .scale-option:hover {
+            border-color: #4a7c59;
+            background: #f8fbf8;
+            transform: scale(1.1);
+        }
+
+        .scale-option.selected {
+            background: #4a7c59;
+            color: white;
+            border-color: #4a7c59;
+            transform: scale(1.15);
+        }
+
+        .neutral-label {
+            font-size: 0.9em;
+            color: #7a8c7a;
+            font-style: italic;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a7c59, #6db33f);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(74, 124, 89, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.8);
+            color: #5a6c57;
+            border: 2px solid #d0d7d0;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            border-color: #4a7c59;
+        }
+
+        .results-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .results-header h2 {
+            color: #2c5530;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+
+        .therapy-match {
+            background: linear-gradient(135deg, #4a7c59, #6db33f);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .therapy-match h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .compatibility-score {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .narrative-section {
+            background: rgba(248, 251, 248, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #4a7c59;
+        }
+
+        .narrative-section h4 {
+            color: #2c5530;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .characteristics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .characteristic-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #4a7c59;
+        }
+
+        .characteristic-card h5 {
+            color: #2c5530;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .disclaimer {
+            background: rgba(255, 248, 220, 0.8);
+            border: 1px solid #d4b86a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #8b7355;
+        }
+
+        .disclaimer strong {
+            color: #7a5c28;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .question-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .scale-container {
+                gap: 8px;
+            }
+            
+            .scale-option {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9em;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Find Your Ideal Therapist Match</h1>
+            <p>Discover the therapeutic approach and therapist style that aligns best with your personal preferences and healing journey.</p>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Question 1 of 18</div>
+        </div>
+
+        <div id="assessmentContainer">
+            <!-- Questions will be dynamically generated here -->
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h2>Your Personalized Therapist Match</h2>
+                <p>Based on your responses, here's your ideal therapeutic approach and what to look for in a therapist.</p>
+            </div>
+            
+            <div class="therapy-match" id="therapyMatch">
+                <!-- Primary match will be displayed here -->
+            </div>
+
+            <div class="narrative-section">
+                <h4>Why This Approach Fits You</h4>
+                <div id="narrativeContent">
+                    <!-- Personalized narrative will be generated here -->
+                </div>
+            </div>
+
+            <div class="characteristics-grid" id="characteristicsGrid">
+                <!-- Therapist characteristics will be displayed here -->
+            </div>
+
+            <div class="narrative-section">
+                <h4>What to Look for in Your Ideal Therapist</h4>
+                <div id="therapistQualities">
+                    <!-- Specific therapist qualities will be listed here -->
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <strong>Important:</strong> This assessment is designed for educational and self-reflection purposes to help you understand your therapy preferences. It is not a diagnostic tool and does not replace professional mental health consultation. Individual preferences may vary, and the best therapeutic relationship often depends on personal chemistry and specific circumstances. We encourage you to discuss these results with potential therapists during initial consultations.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                leftOption: "Use a lot of exercises and techniques",
+                rightOption: "Not use a lot of exercises and techniques"
+            },
+            {
+                id: 2,
+                leftOption: "Lead the process",
+                rightOption: "Allow me to lead the process"
+            },
+            {
+                id: 3,
+                leftOption: "Show personality and a sense of humor",
+                rightOption: "Be formal"
+            },
+            {
+                id: 4,
+                leftOption: "Focus on my past",
+                rightOption: "Focus on my future"
+            },
+            {
+                id: 5,
+                leftOption: "Offer advice",
+                rightOption: "Not offer advice"
+            },
+            {
+                id: 6,
+                leftOption: "Set challenges",
+                rightOption: "Be gentle"
+            },
+            {
+                id: 7,
+                leftOption: "Focus on specific goals only",
+                rightOption: "Be in a relationship with me"
+            },
+            {
+                id: 8,
+                leftOption: "Focus on my feelings",
+                rightOption: "Focus on my thoughts and behaviors"
+            },
+            {
+                id: 9,
+                leftOption: "Talk about what they think is happening in the process",
+                rightOption: "Not talk about what they think is happening in the process"
+            },
+            {
+                id: 10,
+                leftOption: "Focus mainly on my abilities and skills",
+                rightOption: "Focus primarily on my problems and difficulties"
+            },
+            {
+                id: 11,
+                leftOption: "Focus mainly on my life in the past",
+                rightOption: "Focus primarily on my present life"
+            },
+            {
+                id: 12,
+                leftOption: "Not interrupt me while I'm speaking",
+                rightOption: "Interrupt me while I'm talking and direct the flow"
+            },
+            {
+                id: 13,
+                leftOption: "Focus on the relationship between us",
+                rightOption: "Not focus on the relationship between us"
+            },
+            {
+                id: 14,
+                leftOption: "Reconsider my beliefs and life's views",
+                rightOption: "Not reconsider my beliefs and life's views"
+            },
+            {
+                id: 15,
+                leftOption: "Focus on my current problems",
+                rightOption: "Focus on the cause of the problems"
+            },
+            {
+                id: 16,
+                leftOption: "Focus on what they think is best for me",
+                rightOption: "Focus on what I think is best for me"
+            },
+            {
+                id: 17,
+                leftOption: "Talk about themselves",
+                rightOption: "Not talk about themselves"
+            },
+            {
+                id: 18,
+                leftOption: "Leave space for silence",
+                rightOption: "Not leave too much space for silence"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let responses = {};
+
+        function initializeAssessment() {
+            displayQuestion(currentQuestion);
+        }
+
+        function displayQuestion(index) {
+            const question = questions[index];
+            const container = document.getElementById('assessmentContainer');
+            
+            container.innerHTML = `
+                <div class="question-section">
+                    <div class="question-number">Question ${index + 1} of ${questions.length}</div>
+                    
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h3 style="color: #2c5530; font-size: 1.4em; margin-bottom: 20px;">I want my therapist...</h3>
+                    </div>
+                    
+                    <div class="question-content">
+                        <div class="option-left">${question.leftOption}</div>
+                        <div class="option-right">${question.rightOption}</div>
+                    </div>
+                    
+                    <div class="scale-container">
+                        <div class="scale-option" data-value="1" onclick="selectOption(${question.id}, 1)">1</div>
+                        <div class="scale-option" data-value="2" onclick="selectOption(${question.id}, 2)">2</div>
+                        <div class="scale-option" data-value="3" onclick="selectOption(${question.id}, 3)">3</div>
+                        <div class="scale-option" data-value="4" onclick="selectOption(${question.id}, 4)">4</div>
+                        <div class="scale-option" data-value="5" onclick="selectOption(${question.id}, 5)">5</div>
+                        <div class="neutral-label">Neutral</div>
+                        <div class="scale-option" data-value="6" onclick="selectOption(${question.id}, 6)">5</div>
+                        <div class="scale-option" data-value="7" onclick="selectOption(${question.id}, 7)">4</div>
+                        <div class="scale-option" data-value="8" onclick="selectOption(${question.id}, 8)">3</div>
+                        <div class="scale-option" data-value="9" onclick="selectOption(${question.id}, 9)">2</div>
+                        <div class="scale-option" data-value="10" onclick="selectOption(${question.id}, 10)">1</div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn btn-secondary" onclick="previousQuestion()" ${index === 0 ? 'style="visibility: hidden;"' : ''}>Previous</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+                    </div>
+                </div>
+            `;
+            
+            updateProgress();
+            
+            // Restore previous selection if exists
+            if (responses[question.id]) {
+                selectOption(question.id, responses[question.id], false);
+            }
+        }
+
+        function selectOption(questionId, value, animate = true) {
+            responses[questionId] = value;
+            
+            // Update visual selection
+            const options = document.querySelectorAll('.scale-option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            const selectedOption = document.querySelector(`[data-value="${value}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+                if (animate) {
+                    selectedOption.style.animation = 'none';
+                    setTimeout(() => selectedOption.style.animation = '', 10);
+                }
+            }
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion(currentQuestion);
+            } else {
+                generateResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        }
+
+        function generateResults() {
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('assessmentContainer').style.display = 'none';
+            
+            const analysis = analyzeResponses();
+            displayResults(analysis);
+            
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+
+        function analyzeResponses() {
+            // Calculate scores for different therapeutic approaches
+            let scores = {
+                cognitive_behavioral: 0,
+                psychodynamic: 0,
+                humanistic: 0,
+                solution_focused: 0,
+                gestalt: 0,
+                existential: 0,
+                act: 0,
+                dbt: 0,
+                motivational_interviewing: 0
+            };
+
+            // Question 1: Exercises/techniques (CBT vs non-directive)
+            if (responses[1] <= 3) {
+                scores.cognitive_behavioral += 2;
+                scores.dbt += 2;
+                scores.act += 1;
+            }
+            if (responses[1] >= 7) {
+                scores.humanistic += 2;
+                scores.motivational_interviewing += 1;
+            }
+
+            // Question 2: Lead process (directive vs client-led)
+            if (responses[2] <= 3) {
+                scores.cognitive_behavioral += 1;
+                scores.solution_focused += 1;
+                scores.dbt += 1;
+            }
+            if (responses[2] >= 7) {
+                scores.humanistic += 2;
+                scores.gestalt += 1;
+                scores.motivational_interviewing += 2;
+            }
+
+            // Question 3: Personality/humor vs formal
+            if (responses[3] <= 3) {
+                scores.humanistic += 1;
+                scores.gestalt += 1;
+                scores.motivational_interviewing += 1;
+            }
+            if (responses[3] >= 7) {
+                scores.psychodynamic += 1;
+                scores.dbt += 1;
+            }
+
+            // Question 4: Past vs future focus
+            if (responses[4] <= 3) {
+                scores.psychodynamic += 2;
+            }
+            if (responses[4] >= 7) {
+                scores.solution_focused += 2;
+                scores.cognitive_behavioral += 1;
+                scores.act += 1;
+                scores.motivational_interviewing += 1;
+            }
+
+            // Question 5: Advice giving
+            if (responses[5] <= 3) {
+                scores.cognitive_behavioral += 1;
+                scores.solution_focused += 1;
+                scores.dbt += 1;
+            }
+            if (responses[5] >= 7) {
+                scores.humanistic += 2;
+                scores.psychodynamic += 1;
+                scores.motivational_interviewing += 2;
+            }
+
+            // Question 6: Challenges vs gentle
+            if (responses[6] <= 3) {
+                scores.cognitive_behavioral += 1;
+                scores.dbt += 1;
+            }
+            if (responses[6] >= 7) {
+                scores.humanistic += 2;
+                scores.motivational_interviewing += 2;
+                scores.act += 1;
+            }
+
+            // Question 7: Goals vs relationship
+            if (responses[7] <= 3) {
+                scores.cognitive_behavioral += 2;
+                scores.solution_focused += 2;
+                scores.dbt += 1;
+            }
+            if (responses[7] >= 7) {
+                scores.humanistic += 2;
+                scores.psychodynamic += 1;
+                scores.motivational_interviewing += 1;
+            }
+
+            // Question 8: Feelings vs thoughts/behaviors
+            if (responses[8] <= 3) {
+                scores.humanistic += 2;
+                scores.psychodynamic += 1;
+                scores.act += 1;
+            }
+            if (responses[8] >= 7) {
+                scores.cognitive_behavioral += 2;
+                scores.dbt += 2;
+            }
+
+            // Question 9: Process discussion
+            if (responses[9] <= 3) {
+                scores.psychodynamic += 2;
+                scores.gestalt += 1;
+                scores.dbt += 1;
+            }
+            if (responses[9] >= 7) {
+                scores.cognitive_behavioral += 1;
+                scores.solution_focused += 1;
+            }
+
+            // Question 10: Strengths vs problems
+            if (responses[10] <= 3) {
+                scores.solution_focused += 2;
+                scores.humanistic += 1;
+                scores.motivational_interviewing += 2;
+            }
+            if (responses[10] >= 7) {
+                scores.psychodynamic += 1;
+                scores.dbt += 1;
+            }
+
+            // Question 11: Past vs present
+            if (responses[11] <= 3) {
+                scores.psychodynamic += 2;
+            }
+            if (responses[11] >= 7) {
+                scores.gestalt += 2;
+                scores.humanistic += 1;
+                scores.act += 2;
+                scores.dbt += 1;
+            }
+
+            // Question 12: Interruption/direction
+            if (responses[12] <= 3) {
+                scores.humanistic += 2;
+                scores.motivational_interviewing += 1;
+            }
+            if (responses[12] >= 7) {
+                scores.cognitive_behavioral += 1;
+                scores.dbt += 1;
+            }
+
+            // Question 13: Relationship focus
+            if (responses[13] <= 3) {
+                scores.humanistic += 2;
+                scores.psychodynamic += 1;
+                scores.motivational_interviewing += 1;
+            }
+            if (responses[13] >= 7) {
+                scores.cognitive_behavioral += 1;
+                scores.solution_focused += 1;
+            }
+
+            // Question 14: Belief examination
+            if (responses[14] <= 3) {
+                scores.cognitive_behavioral += 2;
+                scores.existential += 2;
+                scores.act += 2;
+            }
+            if (responses[14] >= 7) {
+                scores.humanistic += 1;
+                scores.motivational_interviewing += 1;
+            }
+
+            // Question 15: Current problems vs causes
+            if (responses[15] <= 3) {
+                scores.cognitive_behavioral += 1;
+                scores.solution_focused += 2;
+                scores.dbt += 1;
+            }
+            if (responses[15] >= 7) {
+                scores.psychodynamic += 2;
+            }
+
+            // Question 16: Therapist vs client direction
+            if (responses[16] <= 3) {
+                scores.cognitive_behavioral += 1;
+                scores.dbt += 1;
+            }
+            if (responses[16] >= 7) {
+                scores.humanistic += 2;
+                scores.solution_focused += 1;
+                scores.motivational_interviewing += 2;
+                scores.act += 1;
+            }
+
+            // Question 17: Self-disclosure
+            if (responses[17] <= 3) {
+                scores.humanistic += 1;
+                scores.gestalt += 1;
+                scores.motivational_interviewing += 1;
+            }
+            if (responses[17] >= 7) {
+                scores.psychodynamic += 2;
+                scores.cognitive_behavioral += 1;
+            }
+
+            // Question 18: Silence tolerance
+            if (responses[18] <= 3) {
+                scores.psychodynamic += 1;
+                scores.existential += 1;
+                scores.act += 1;
+            }
+            if (responses[18] >= 7) {
+                scores.cognitive_behavioral += 1;
+                scores.dbt += 1;
+                scores.motivational_interviewing += 1;
+            }
+
+            // Find primary approach
+            let primaryApproach = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            
+            return {
+                primaryApproach,
+                scores,
+                compatibilityScore: Math.round((scores[primaryApproach] / 25) * 100)
+            };
+        }
+
+        function displayResults(analysis) {
+            const approachInfo = {
+                cognitive_behavioral: {
+                    name: "Cognitive Behavioral Therapy (CBT)",
+                    description: "A structured, goal-oriented approach that focuses on identifying and changing negative thought patterns and behaviors.",
+                    characteristics: [
+                        "Uses specific techniques and exercises",
+                        "Provides practical homework assignments",
+                        "Focuses on present-day problems",
+                        "Emphasizes measurable goals",
+                        "Takes an active, directive approach"
+                    ],
+                    idealTherapist: "Look for a therapist who is structured, practical, and skilled in evidence-based techniques. They should be comfortable giving guidance and assignments while working collaboratively with you on specific goals."
+                },
+                psychodynamic: {
+                    name: "Psychodynamic Therapy",
+                    description: "An insight-oriented approach that explores unconscious patterns, past experiences, and their impact on current relationships and behaviors.",
+                    characteristics: [
+                        "Explores childhood and past experiences",
+                        "Examines unconscious motivations",
+                        "Analyzes therapeutic relationship",
+                        "Uses interpretation and insight",
+                        "Allows for emotional expression"
+                    ],
+                    idealTherapist: "Seek a therapist who is comfortable with depth, introspection, and exploring complex emotions. They should be skilled in making connections between past and present while maintaining appropriate boundaries."
+                },
+                humanistic: {
+                    name: "Humanistic/Person-Centered Therapy",
+                    description: "A client-centered approach that emphasizes the therapeutic relationship, personal growth, and the client's innate capacity for positive change.",
+                    characteristics: [
+                        "Emphasizes the therapeutic relationship",
+                        "Client leads the direction of therapy",
+                        "Focuses on present experience",
+                        "Values authenticity and acceptance",
+                        "Promotes self-discovery"
+                    ],
+                    idealTherapist: "Find a therapist who is warm, genuine, and non-judgmental. They should be comfortable following your lead while providing a safe, supportive environment for self-exploration."
+                },
+                solution_focused: {
+                    name: "Solution-Focused Brief Therapy (SFBT)",
+                    description: "A goal-oriented approach that focuses on solutions rather than problems, emphasizing client strengths and resources.",
+                    characteristics: [
+                        "Focuses on solutions, not problems",
+                        "Emphasizes client strengths",
+                        "Sets clear, achievable goals",
+                        "Uses practical interventions",
+                        "Typically shorter-term"
+                    ],
+                    idealTherapist: "Look for a therapist who is optimistic, strength-focused, and skilled at helping you identify and build upon your existing resources and capabilities."
+                },
+                gestalt: {
+                    name: "Gestalt Therapy",
+                    description: "An experiential approach that focuses on present-moment awareness, personal responsibility, and the integration of thoughts, feelings, and actions.",
+                    characteristics: [
+                        "Emphasizes present-moment experience",
+                        "Uses creative and experiential techniques",
+                        "Focuses on body awareness",
+                        "Encourages personal responsibility",
+                        "Values authentic contact"
+                    ],
+                    idealTherapist: "Seek a therapist who is comfortable with experiential work, values authenticity, and can help you develop greater self-awareness through creative and body-oriented approaches."
+                },
+                existential: {
+                    name: "Existential Therapy",
+                    description: "A philosophical approach that explores questions of meaning, freedom, death, and responsibility, helping clients create authentic lives.",
+                    characteristics: [
+                        "Explores life's big questions",
+                        "Examines meaning and purpose",
+                        "Addresses existential concerns",
+                        "Values authentic living",
+                        "Focuses on personal freedom"
+                    ],
+                    idealTherapist: "Find a therapist who is comfortable with deep philosophical discussions, can help you explore life's meaning, and supports you in making authentic choices aligned with your values."
+                },
+                act: {
+                    name: "Acceptance and Commitment Therapy (ACT)",
+                    description: "A mindfulness-based approach that helps clients accept difficult thoughts and feelings while committing to values-based actions for psychological flexibility.",
+                    characteristics: [
+                        "Emphasizes psychological flexibility",
+                        "Uses mindfulness and acceptance strategies",
+                        "Focuses on values-based living",
+                        "Teaches defusion from unhelpful thoughts",
+                        "Promotes committed action despite discomfort"
+                    ],
+                    idealTherapist: "Look for a therapist who understands mindfulness principles, can help you clarify your values, and supports you in taking meaningful action even when experiencing difficult emotions or thoughts."
+                },
+                dbt: {
+                    name: "Dialectical Behavior Therapy (DBT)",
+                    description: "A comprehensive approach that teaches practical skills for managing intense emotions, improving relationships, and tolerating distress effectively.",
+                    characteristics: [
+                        "Teaches concrete emotional regulation skills",
+                        "Focuses on distress tolerance techniques",
+                        "Emphasizes interpersonal effectiveness",
+                        "Incorporates mindfulness practices",
+                        "Balances acceptance and change strategies"
+                    ],
+                    idealTherapist: "Seek a therapist who is skilled in DBT techniques, comfortable working with intense emotions, and can provide both support and skills training in a structured yet compassionate manner."
+                },
+                motivational_interviewing: {
+                    name: "Motivational Interviewing (MI)",
+                    description: "A collaborative, person-centered approach that helps clients explore and resolve ambivalence about change while enhancing motivation for positive transformation.",
+                    characteristics: [
+                        "Explores motivation for change",
+                        "Resolves ambivalence about change",
+                        "Uses collaborative, non-confrontational style",
+                        "Emphasizes client autonomy and choice",
+                        "Focuses on intrinsic motivation"
+                    ],
+                    idealTherapist: "Find a therapist who is skilled in collaborative dialogue, comfortable with your pace of change, and can help you explore your own motivations without being pushy or judgmental."
+                }
+            };
+
+            const info = approachInfo[analysis.primaryApproach];
+            
+            document.getElementById('therapyMatch').innerHTML = `
+                <h3>${info.name}</h3>
+                <div class="compatibility-score">${analysis.compatibilityScore}% Match</div>
+                <p>${info.description}</p>
+            `;
+
+            document.getElementById('narrativeContent').innerHTML = `
+                <p>Based on your responses, you show a strong preference for the ${info.name.toLowerCase()} approach to therapy. This suggests you would thrive in a therapeutic environment that ${info.description.toLowerCase()}</p>
+                
+                <p>Your responses indicate that you value ${getPersonalizedNarrative(analysis, info)} This approach aligns well with your preferences for how therapy should feel and function.</p>
+                
+                <p>People who resonate with this approach often find that it provides the right balance of ${getBalanceDescription(analysis.primaryApproach)} that supports their personal growth and healing journey.</p>
+            `;
+
+            const characteristicsHtml = info.characteristics.map(char => `
+                <div class="characteristic-card">
+                    <h5>Key Characteristic</h5>
+                    <p>${char}</p>
+                </div>
+            `).join('');
+            
+            document.getElementById('characteristicsGrid').innerHTML = characteristicsHtml;
+            
+            document.getElementById('therapistQualities').innerHTML = `
+                <p>${info.idealTherapist}</p>
+                
+                <p><strong>Questions to ask potential therapists:</strong></p>
+                <ul>
+                    ${getTherapistQuestions(analysis.primaryApproach).map(q => `<li>${q}</li>`).join('')}
+                </ul>
+                
+                <p><strong>Red flags to watch for:</strong> A therapist who ${getRedFlags(analysis.primaryApproach).join(", or who ")}</p>
+            `;
+        }
+
+        function getPersonalizedNarrative(analysis, info) {
+            const narratives = {
+                cognitive_behavioral: "structured, practical approaches with clear goals and actionable strategies",
+                psychodynamic: "deep exploration, insight development, and understanding the roots of current patterns",
+                humanistic: "genuine connection, personal authenticity, and being truly heard and accepted",
+                solution_focused: "strength-based approaches, practical solutions, and building on what already works",
+                gestalt: "present-moment awareness, creative expression, and integrating mind and body",
+                existential: "deep meaning-making, philosophical exploration, and authentic self-expression",
+                act: "mindfulness-based acceptance, values clarification, and psychological flexibility in facing life's challenges",
+                dbt: "practical skills for emotional regulation, concrete strategies for managing intense feelings, and balanced approaches to acceptance and change",
+                motivational_interviewing: "collaborative exploration of change, respect for your autonomy, and gentle guidance in discovering your own motivations"
+            };
+            return narratives[analysis.primaryApproach];
+        }
+
+        function getBalanceDescription(approach) {
+            const descriptions = {
+                cognitive_behavioral: "structure and collaboration, practical tools and supportive guidance",
+                psychodynamic: "exploration and insight, emotional depth and professional boundaries",
+                humanistic: "acceptance and growth, warmth and genuine connection",
+                solution_focused: "optimism and practicality, strength-focus and goal achievement",
+                gestalt: "present-moment focus and creative expression, awareness and integration",
+                existential: "philosophical depth and practical living, meaning-making and authentic action",
+                act: "acceptance and action, mindfulness and values-based commitment",
+                dbt: "emotional regulation and interpersonal skills, acceptance and change strategies",
+                motivational_interviewing: "collaboration and gentle guidance, respect for autonomy and supportive exploration"
+            };
+            return descriptions[approach];
+        }
+
+        function getTherapistQuestions(approach) {
+            const questions = {
+                cognitive_behavioral: [
+                    "What specific CBT techniques do you use most often?",
+                    "How do you typically structure therapy sessions?",
+                    "Do you assign homework or between-session exercises?",
+                    "How do you measure progress in therapy?"
+                ],
+                psychodynamic: [
+                    "How do you work with unconscious patterns?",
+                    "What's your approach to exploring past experiences?",
+                    "How do you handle the therapeutic relationship?",
+                    "Are you comfortable with longer-term therapy?"
+                ],
+                humanistic: [
+                    "How do you create a safe, accepting environment?",
+                    "What's your philosophy about the client's role in therapy?",
+                    "How do you handle emotional expression in sessions?",
+                    "Do you share your own experiences when appropriate?"
+                ],
+                solution_focused: [
+                    "How do you identify and build on client strengths?",
+                    "What's your typical approach to goal-setting?",
+                    "How do you handle setbacks or challenges?",
+                    "Do you work with brief therapy models?"
+                ],
+                gestalt: [
+                    "What experiential techniques do you use?",
+                    "How comfortable are you with body-oriented work?",
+                    "Do you work with dreams or creative expression?",
+                    "How do you handle strong emotions in therapy?"
+                ],
+                existential: [
+                    "How do you approach questions of meaning and purpose?",
+                    "Are you comfortable with philosophical discussions?",
+                    "How do you work with existential anxiety?",
+                    "What's your view on authenticity in living?"
+                ],
+                act: [
+                    "How do you incorporate mindfulness into therapy?",
+                    "What's your approach to values clarification?",
+                    "How do you help clients with psychological flexibility?",
+                    "Do you use ACT-specific exercises and metaphors?"
+                ],
+                dbt: [
+                    "Are you trained in the full DBT model?",
+                    "How do you teach emotional regulation skills?",
+                    "Do you incorporate mindfulness practices?",
+                    "How do you balance acceptance and change strategies?"
+                ],
+                motivational_interviewing: [
+                    "How do you help clients explore their ambivalence about change?",
+                    "What's your approach when clients seem resistant?",
+                    "How do you maintain a collaborative relationship?",
+                    "Do you have training in motivational interviewing techniques?"
+                ]
+            };
+            return questions[approach];
+        }
+
+        function getRedFlags(approach) {
+            const redFlags = {
+                cognitive_behavioral: [
+                    "seems too rigid or inflexible in their approach",
+                    "doesn't provide clear structure or goals",
+                    "avoids practical applications or homework"
+                ],
+                psychodynamic: [
+                    "rushes toward solutions without exploration",
+                    "avoids discussing the therapeutic relationship",
+                    "seems uncomfortable with emotional depth"
+                ],
+                humanistic: [
+                    "seems judgmental or critical",
+                    "tries to direct your process too much",
+                    "doesn't seem genuinely interested in your experience"
+                ],
+                solution_focused: [
+                    "focuses too much on problems rather than solutions",
+                    "doesn't acknowledge your existing strengths",
+                    "seems pessimistic about change"
+                ],
+                gestalt: [
+                    "seems uncomfortable with emotions or body awareness",
+                    "avoids present-moment focus",
+                    "lacks creativity in their approach"
+                ],
+                existential: [
+                    "avoids deeper philosophical questions",
+                    "seems uncomfortable with life's uncertainties",
+                    "pushes for quick fixes to existential concerns"
+                ],
+                act: [
+                    "doesn't understand mindfulness principles",
+                    "pushes for immediate behavior change without acceptance work",
+                    "avoids discussing values or meaning"
+                ],
+                dbt: [
+                    "lacks proper DBT training or certification",
+                    "seems uncomfortable with intense emotions",
+                    "doesn't teach concrete skills or provide structure"
+                ],
+                motivational_interviewing: [
+                    "seems confrontational or argumentative about change",
+                    "doesn't respect your autonomy or pace",
+                    "pushes their agenda rather than exploring yours"
+                ]
+            };
+            return redFlags[approach];
+        }
+
+        // Initialize the assessment when the page loads
+        document.addEventListener('DOMContentLoaded', initializeAssessment);
+    </script>
+</body>
+</html>
